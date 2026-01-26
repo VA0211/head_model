@@ -1,0 +1,17 @@
+D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\cupy\_environment.py:215: UserWarning: CUDA path could not be detected. Set CUDA_PATH environment variable if CuPy fails to load.
+  warnings.warn(
+Traceback (most recent call last):
+  File "D:\VA\coding\project\bioinformatics\code\head_model\head\make_submission.py", line 43, in <module>
+    main()
+  File "D:\VA\coding\project\bioinformatics\code\head_model\head\make_submission.py", line 20, in main
+    pp, info = data.load(path)
+  File "D:\VA\coding\project\bioinformatics\code\head_model\head\data\io.py", line 22, in load
+    with tb.open_file(path, 'r') as f:
+  File "D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\tables\file.py", line 296, in open_file
+    return File(filename, mode, title, root_uep, filters, **kwargs)
+  File "D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\tables\file.py", line 746, in __init__
+    self._g_new(filename, mode, **params)
+  File "tables\\hdf5extension.pyx", line 396, in tables.hdf5extension.File._g_new
+  File "D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\tables\utils.py", line 166, in check_file_access
+    raise FileNotFoundError(f"``{path}`` does not exist")
+FileNotFoundError: ``D:\VA\coding\project\bioinformatics\code\head_model\head\work_dir_fold0\*\*\lev2_xgboost2\test.h5`` does not exist
