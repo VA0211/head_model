@@ -1,12 +1,52 @@
-Traceback (most recent call last):
-  File "D:\VA\coding\project\bioinformatics\code\head_model\head\evaluate.py", line 25, in <module>
-    y_pred = np.loadtxt(args.prediction).astype(np.int32)
-  File "D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\numpy\lib\npyio.py", line 1373, in loadtxt
-    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
-  File "D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\numpy\lib\npyio.py", line 992, in _read
-    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
-  File "D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\numpy\lib\_datasource.py", line 193, in open
-    return ds.open(path, mode, encoding=encoding, newline=newline)
-  File "D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\numpy\lib\_datasource.py", line 533, in open
-    raise FileNotFoundError(f"{path} not found.")
-FileNotFoundError: result_fold0/submission.txt not found.
+D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\sklearn\metrics\_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\sklearn\metrics\_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\sklearn\metrics\_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+{'BC_benign': {'sensitivity': 0.0, 'specificity': 1.0, 'support': 6}, 'BC': {'sensitivity': 0.8074074074074075, 'specificity': 0.9800193361263294, 'support': 135}, 'BL': {'sensitivity': 0.1875, 'specificity': 0.9927169094363522, 'support': 80}, 'BT': {'sensitivity': 0.0375, 'specificity': 0.9968334388853705, 'support': 80}, 'CC': {'sensitivity': 0.4608150470219436, 'specificity': 0.9410757108598835, 'support': 319}, 'EC': {'sensitivity': 0.6228070175438597, 'specificity': 0.9846350832266325, 'support': 114}, 'GC': {'sensitivity': 0.4416961130742049, 'specificity': 0.9461928934010152, 'support': 283}, 'GL_benign': {'sensitivity': 0.0, 'specificity': 1.0, 'support': 5}, 'GL': {'sensitivity': 0.5918367346938775, 'specificity': 0.995609909062402, 'support': 49}, 'HC': {'sensitivity': 0.07246376811594203, 'specificity': 0.9974755443357526, 'support': 69}, 'LK': {'sensitivity': 0.40117994100294985, 'specificity': 0.9248016557433598, 'support': 339}, 'OV_benign': {'sensitivity': 0.0, 'specificity': 1.0, 'support': 5}, 'OV': {'sensitivity': 0.05, 'specificity': 0.9952501583280557, 'support': 80}, 'PC': {'sensitivity': 0.4, 'specificity': 0.9599087353324641, 'support': 170}, 'PR_benign': {'sensitivity': 0.13043478260869565, 'specificity': 0.9968671679197995, 'support': 46}, 'PR': {'sensitivity': 0.46116504854368934, 'specificity': 0.9544854881266491, 'support': 206}, 'SA_benign': {'sensitivity': 0.2698412698412698, 'specificity': 0.9971653543307086, 'support': 63}, 'SA': {'sensitivity': 0.4, 'specificity': 0.9921334172435494, 'support': 60}, 'VOL': {'sensitivity': 0.9140832595217007, 'specificity': 0.8492176386913229, 'support': 1129}}
+              precision    recall  f1-score   support
+
+   BC_benign       0.00      0.00      0.00         6
+          BC       0.64      0.81      0.71       135
+          BL       0.39      0.19      0.25        80
+          BT       0.23      0.04      0.06        80
+          CC       0.46      0.46      0.46       319
+          EC       0.60      0.62      0.61       114
+          GC       0.44      0.44      0.44       283
+   GL_benign       0.00      0.00      0.00         5
+          GL       0.67      0.59      0.63        49
+          HC       0.38      0.07      0.12        69
+          LK       0.38      0.40      0.39       339
+   OV_benign       0.00      0.00      0.00         5
+          OV       0.21      0.05      0.08        80
+          PC       0.36      0.40      0.38       170
+   PR_benign       0.38      0.13      0.19        46
+          PR       0.41      0.46      0.43       206
+   SA_benign       0.65      0.27      0.38        63
+          SA       0.49      0.40      0.44        60
+         VOL       0.76      0.91      0.83      1129
+
+    accuracy                           0.58      3238
+   macro avg       0.39      0.33      0.34      3238
+weighted avg       0.55      0.58      0.55      3238
+
+[[   0    6    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0]
+ [   0  109    2    0   13    0    0    0    0    0    1    0    0    4    0    5    1    0    0]
+ [   0    1   15    0   10    0    0    0    0    0    4    0    0    9    1   25    0    0   15]
+ [   0    1    1    3   11    0   14    0    0    1   10    0    1   23    1    3    0    0   11]
+ [   0   27    2    3  147    7   20    0    2    1   28    0    2   28    0   12    5    0   35]
+ [   0    1    0    1   10   71    0    0    0    0    3    0    4    9    0    0    0    8    7]
+ [   0    0    0    0    7    0  125    0    0    1   84    0    0    0    0    6    0    0   60]
+ [   0    0    0    0    1    0    2    0    0    0    0    0    0    1    0    1    0    0    0]
+ [   0    1    0    0    5    2    1    0   29    0    2    0    0    2    0    3    0    2    2]
+ [   0    0    0    2   16    2    2    0    0    5   11    0    1   12    0    0    0    0   18]
+ [   0    0    1    0   11    2   61    0    2    1  136    0    3    2    2   23    0    1   94]
+ [   0    1    1    0    0    0    0    0    0    0    1    0    0    0    1    1    0    0    0]
+ [   0    0    1    0    7   20    3    0    0    1    1    0    4   10    1   17    0    6    9]
+ [   0    5    3    4   40    8    2    0    0    1    1    0    2   68    0   10    2    2   22]
+ [   0    0    3    0    0    0    1    0    2    1   10    0    0    1    6   17    0    0    5]
+ [   0    5    6    0    5    0   22    0    1    1   33    0    0    8    4   95    0    0   26]
+ [   0   12    0    0   11    0    0    0    1    0    0    0    0    6    0    5   17    2    9]
+ [   0    2    1    0    6    7    0    0    6    0    2    0    2    4    0    1    0   24    5]
+ [   0    0    2    0   19    0   31    0    0    0   27    0    0    4    0    9    1    4 1032]]

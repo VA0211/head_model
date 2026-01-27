@@ -18,11 +18,11 @@ if [ ! -d ${result_dir} ]; then
 fi
 
 # --- THE CRITICAL CHANGE ---
-# We removed the '&' at the end of the python command.
+# Removed the '&' at the end of the python command.
 # This forces the computer to finish Loop 0 before starting Loop 1.
-# We also keep --gpu=0 to use RTX 4050.
+# Keep --gpu=0 to use GPU (RTX 4050).
 
-for i in 0 1 2 3 4
+for i in 0
 do
     echo "Starting training for seed ${i}..."
     python full.py \

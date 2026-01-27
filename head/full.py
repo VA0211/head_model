@@ -62,15 +62,16 @@ def main():
         #
         pl.predict_proba(
             output_name='lev1_random-forest', input_names=['imputed'], validate_size=2,
-            estimator=sklearn.ensemble.RandomForestClassifier()
+            estimator=sklearn.ensemble.RandomForestClassifier(n_jobs=-1)
         )
+        # n_jobs=-1 force it to use all of CPU core
         pl.predict_proba(
             output_name='lev1_logistic-regression', input_names=['imputed'], validate_size=2,
             estimator=sklearn.linear_model.LogisticRegression()
         )
         pl.predict_proba(
             output_name='lev1_extra-tree', input_names=['imputed'], validate_size=2,
-            estimator=sklearn.ensemble.ExtraTreesClassifier()
+            estimator=sklearn.ensemble.ExtraTreesClassifier(n_jobs=-1)
         )
         pl.decision_function(
             output_name='lev1_linear-svc', input_names=['imputed'], validate_size=2,
@@ -82,7 +83,7 @@ def main():
         for k in KS:
             pl.predict_proba(
                 output_name='lev1_knn_k={}'.format(k), input_names=['imputed'], validate_size=2,
-                estimator=sklearn.neighbors.KNeighborsClassifier(n_neighbors=k),
+                estimator=sklearn.neighbors.KNeighborsClassifier(n_neighbors=k, n_jobs=-1),
             )
         pl.transform(
             output_name='lev1_knn_distances', input_names=['imputed'], validate_size=2,
@@ -97,8 +98,10 @@ def main():
             output_name='lev1_xgboost', input_names=['raw', 'tsne'], validate_size=2,
             estimator=xgboost.XGBClassifier(
                 objective='multi:softmax', learning_rate=0.05, max_depth=5, n_estimators=1000,
-                nthread=10, subsample=0.5, colsample_bytree=1.0),
+                nthread=10, subsample=0.5, colsample_bytree=1.0,
+                device='cuda'), # <--- Force to use GPU only
         )
+
         pl.predict_proba(
             output_name='lev1_mlp3', input_names=['imputed', 'tsne'], validate_size=2,
             estimator=models.chainer.ChainerClassifier(models.chainer.MLP3, gpu=args.gpu, n_epoch=100, n_out=len(pl.label_names))
@@ -129,9 +132,11 @@ def main():
             output_name='lev2_xgboost2', input_names=(LEVEL1_PREDICTIONS + LEVEL1_FEATURES), validate_size=1,
             estimator=xgboost.XGBClassifier(
                 objective='multi:softmax', learning_rate=0.1, max_depth=5, n_estimators=1000,
-                nthread=10, subsample=0.9, colsample_bytree=0.7),
+                nthread=10, subsample=0.9, colsample_bytree=0.7, 
+                device='cuda'), # <--- GPU Enabled
             version=1
         )
+        
         pl.predict_proba(
             output_name='lev2_mlp4', input_names=(['imputed'] + LEVEL1_PREDICTIONS + LEVEL1_FEATURES), validate_size=1,
             estimator=models.chainer.ChainerClassifier(models.chainer.MLP4, gpu=args.gpu, n_epoch=200, n_out=len(pl.label_names)),
