@@ -27,6 +27,8 @@ For the usage of code in the subdirectories, see `README.md` therein.
 ```
 pip install "numpy<2.0"
 pip install cupy-cuda12x
+# Moving the chainer (no longer supported) to using torch
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
 ```
 cd head
