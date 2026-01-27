@@ -1,0 +1,52 @@
+D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\sklearn\metrics\_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\sklearn\metrics\_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+D:\VA\coding\project\bioinformatics\code\head_model\venv_310\lib\site-packages\sklearn\metrics\_classification.py:1731: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+{'BC_benign': {'sensitivity': 0.0, 'specificity': 1.0, 'support': 6}, 'BC': {'sensitivity': 0.7925925925925926, 'specificity': 0.9809861424427972, 'support': 135}, 'BL': {'sensitivity': 0.175, 'specificity': 0.9914502849905004, 'support': 80}, 'BT': {'sensitivity': 0.0375, 'specificity': 0.9968334388853705, 'support': 80}, 'CC': {'sensitivity': 0.4827586206896552, 'specificity': 0.9393627954779034, 'support': 319}, 'EC': {'sensitivity': 0.6403508771929824, 'specificity': 0.984955185659411, 'support': 114}, 'GC': {'sensitivity': 0.43462897526501765, 'specificity': 0.9458544839255499, 'support': 283}, 'GL_benign': {'sensitivity': 0.0, 'specificity': 1.0, 'support': 5}, 'GL': {'sensitivity': 0.6326530612244898, 'specificity': 0.9952963311382879, 'support': 49}, 'HC': {'sensitivity': 0.07246376811594203, 'specificity': 0.9977911012937836, 'support': 69}, 'LK': {'sensitivity': 0.3952802359882006, 'specificity': 0.9272162814763711, 'support': 339}, 'OV_benign': {'sensitivity': 0.0, 'specificity': 1.0, 'support': 5}, 'OV': {'sensitivity': 0.0875, 'specificity': 0.9946168461051298, 'support': 80}, 'PC': {'sensitivity': 0.4294117647058823, 'specificity': 0.961864406779661, 'support': 170}, 'PR_benign': {'sensitivity': 0.10869565217391304, 'specificity': 0.9981203007518797, 'support': 46}, 'PR': {'sensitivity': 0.4368932038834951, 'specificity': 0.9551451187335093, 'support': 206}, 'SA_benign': {'sensitivity': 0.2222222222222222, 'specificity': 0.9962204724409449, 'support': 63}, 'SA': {'sensitivity': 0.38333333333333336, 'specificity': 0.9933920704845814, 'support': 60}, 'VOL': {'sensitivity': 0.9176262178919398, 'specificity': 0.8463726884779517, 'support': 1129}}
+              precision    recall  f1-score   support
+
+   BC_benign       0.00      0.00      0.00         6
+          BC       0.64      0.79      0.71       135
+          BL       0.34      0.17      0.23        80
+          BT       0.23      0.04      0.06        80
+          CC       0.47      0.48      0.47       319
+          EC       0.61      0.64      0.62       114
+          GC       0.43      0.43      0.43       283
+   GL_benign       0.00      0.00      0.00         5
+          GL       0.67      0.63      0.65        49
+          HC       0.42      0.07      0.12        69
+          LK       0.39      0.40      0.39       339
+   OV_benign       0.00      0.00      0.00         5
+          OV       0.29      0.09      0.13        80
+          PC       0.38      0.43      0.41       170
+   PR_benign       0.45      0.11      0.18        46
+          PR       0.40      0.44      0.42       206
+   SA_benign       0.54      0.22      0.31        63
+          SA       0.52      0.38      0.44        60
+         VOL       0.76      0.92      0.83      1129
+
+    accuracy                           0.58      3238
+   macro avg       0.40      0.33      0.34      3238
+weighted avg       0.55      0.58      0.56      3238
+
+[[   0    4    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    1    0]
+ [   0  107    4    0   14    0    0    0    0    0    1    0    0    3    0    4    2    0    0]
+ [   0    1   14    0   10    0    1    0    0    0    3    0    1    8    1   26    0    0   15]
+ [   0    1    2    3   12    0   13    0    0    2   10    0    1   23    1    2    0    0   10]
+ [   0   24    2    4  154    8   23    0    2    0   24    0    2   24    0   10    6    0   36]
+ [   0    1    0    1   11   73    0    0    0    0    3    0    2    9    0    0    0    7    7]
+ [   0    0    0    0    8    0  123    0    0    1   77    0    0    0    0    8    0    0   66]
+ [   0    0    0    0    1    0    1    0    1    0    0    0    0    1    0    1    0    0    0]
+ [   0    1    0    0    4    2    1    0   31    0    2    0    0    2    0    4    0    2    0]
+ [   0    0    0    2   15    2    3    0    0    5   11    0    1   12    0    0    0    0   18]
+ [   0    0    1    0   13    3   63    0    2    1  134    0    3    2    0   22    0    1   94]
+ [   0    1    1    0    0    0    0    0    0    0    1    0    0    0    0    2    0    0    0]
+ [   0    1    1    0    6   18    3    0    0    1    0    0    7   10    0   19    0    5    9]
+ [   0    5    3    3   36    7    2    0    0    0    1    0    3   73    0    9    2    2   24]
+ [   0    0    3    0    0    0    1    0    2    0   12    0    1    1    5   16    0    0    5]
+ [   0    6    7    0    7    0   25    0    1    1   32    0    0    6    4   90    1    0   26]
+ [   0   12    0    0   14    0    0    0    1    0    0    0    0    7    0    5   14    1    9]
+ [   0    2    1    0    6    7    0    0    6    0    2    0    2    5    0    1    0   23    5]
+ [   0    0    2    0   19    0   24    0    0    1   32    0    1    4    0    7    1    2 1036]]

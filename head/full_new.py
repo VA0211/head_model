@@ -10,7 +10,8 @@ import argparse
 import project
 import logger
 import features.knn
-import models.pytorch_wrapper as ptw  # <--- Our new PyTorch adapter
+import models.pytorch_wrapper as ptw
+import numpy as np
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input_dir', default='../micro_rna/20160809_contestant/')
@@ -24,8 +25,7 @@ def main():
     logger.setup_logger()
     seeds = map(int, args.seeds.split(','))
     
-    # Force t-SNE to be faster using all cores
-    # (Note: standard sklearn TSNE is slow, but n_jobs helps if you have modern sklearn)
+    # Force t-SNE to use all cores
     tsne_estimator = sklearn.manifold.TSNE(n_components=3, n_jobs=-1)
 
     for seed in seeds:
@@ -38,63 +38,113 @@ def main():
         )
 
         # --- LEVEL 0 (Preprocessing) ---
-        pl.transform('imputed', ['raw'], True, sklearn.impute.SimpleImputer(strategy='median'))
-        pl.transform('normalized', ['imputed'], True, sklearn.preprocessing.Normalizer())
+        # Fixed: Used explicit keyword arguments for everything
+        pl.transform(
+            output_name='imputed', input_names=['raw'], unsupervised=True,
+            estimator=sklearn.impute.SimpleImputer(strategy='median')
+        )
+        pl.transform(
+            output_name='normalized', input_names=['imputed'], unsupervised=True,
+            estimator=sklearn.preprocessing.Normalizer()
+        )
         
-        # We enable t-SNE now!
+        # t-SNE (Now enabled and safe)
         print("Running t-SNE (this might take 5-10 mins)...")
-        pl.transform('tsne', ['imputed'], True, tsne_estimator)
+        pl.transform(
+            output_name='tsne', input_names=['imputed'], unsupervised=True,
+            estimator=tsne_estimator
+        )
 
         # --- LEVEL 1 (Base Models) ---
-        # CPU Models (Accelerated)
-        pl.predict_proba('lev1_random-forest', ['imputed'], 2, sklearn.ensemble.RandomForestClassifier(n_jobs=-1))
-        pl.predict_proba('lev1_logistic-regression', ['imputed'], 2, sklearn.linear_model.LogisticRegression(n_jobs=-1))
-        pl.predict_proba('lev1_extra-tree', ['imputed'], 2, sklearn.ensemble.ExtraTreesClassifier(n_jobs=-1))
-        pl.decision_function('lev1_linear-svc', ['imputed'], 2, sklearn.svm.LinearSVC(penalty='l1', loss='squared_hinge', dual=False, C=50), version=1)
+        # CPU Models (Accelerated with n_jobs=-1)
+        pl.predict_proba(
+            output_name='lev1_random-forest', input_names=['imputed'], validate_size=2,
+            estimator=sklearn.ensemble.RandomForestClassifier(n_jobs=-1)
+        )
+        pl.predict_proba(
+            output_name='lev1_logistic-regression', input_names=['imputed'], validate_size=2,
+            estimator=sklearn.linear_model.LogisticRegression(n_jobs=-1)
+        )
+        pl.predict_proba(
+            output_name='lev1_extra-tree', input_names=['imputed'], validate_size=2,
+            estimator=sklearn.ensemble.ExtraTreesClassifier(n_jobs=-1)
+        )
+        pl.decision_function(
+            output_name='lev1_linear-svc', input_names=['imputed'], validate_size=2,
+            estimator=sklearn.svm.LinearSVC(penalty='l1', loss='squared_hinge', dual=False, C=50),
+            version=1
+        )
 
         # KNN (Accelerated)
         KS = [2, 4, 8, 16, 32, 64, 128, 256]
         for k in KS:
-            pl.predict_proba(f'lev1_knn_k={k}', ['imputed'], 2, sklearn.neighbors.KNeighborsClassifier(n_neighbors=k, n_jobs=-1))
+            pl.predict_proba(
+                output_name='lev1_knn_k={}'.format(k), input_names=['imputed'], validate_size=2,
+                estimator=sklearn.neighbors.KNeighborsClassifier(n_neighbors=k, n_jobs=-1)
+            )
         
-        pl.transform('lev1_knn_distances', ['imputed'], 2, features.knn.KNNDistanceFeature(ks=[1, 2, 4]))
-        pl.transform('lev1_knn_distances_tsne', ['tsne'], 2, features.knn.KNNDistanceFeature(ks=[1]))
+        pl.transform(
+            output_name='lev1_knn_distances', input_names=['imputed'], validate_size=2,
+            estimator=features.knn.KNNDistanceFeature(ks=[1, 2, 4])
+        )
+        pl.transform(
+            output_name='lev1_knn_distances_tsne', input_names=['tsne'], validate_size=2,
+            estimator=features.knn.KNNDistanceFeature(ks=[1])
+        )
 
         # XGBoost (GPU Accelerated)
-        pl.predict_proba('lev1_xgboost', ['raw', 'tsne'], 2, 
-            xgboost.XGBClassifier(objective='multi:softmax', learning_rate=0.05, max_depth=5, 
-                                n_estimators=1000, nthread=10, subsample=0.5, colsample_bytree=1.0, 
-                                device='cuda'))
+        pl.predict_proba(
+            output_name='lev1_xgboost', input_names=['raw', 'tsne'], validate_size=2,
+            estimator=xgboost.XGBClassifier(
+                objective='multi:softmax', learning_rate=0.05, max_depth=5, 
+                n_estimators=1000, nthread=10, subsample=0.5, colsample_bytree=1.0, 
+                device='cuda')
+        )
 
         # Neural Networks (PyTorch Replacement - GPU Accelerated)
-        # We replace models.chainer.MLP3 with ptw.MLP3
-        pl.predict_proba('lev1_mlp3', ['imputed', 'tsne'], 2,
-            ptw.PyTorchClassifier(ptw.MLP3, gpu=0, n_epoch=100, n_out=len(pl.label_names)))
+        pl.predict_proba(
+            output_name='lev1_mlp3', input_names=['imputed', 'tsne'], validate_size=2,
+            estimator=ptw.PyTorchClassifier(ptw.MLP3, gpu=0, n_epoch=100, n_out=len(pl.label_names))
+        )
             
-        pl.predict_proba('lev1_mlp4', ['imputed', 'tsne'], 2,
-            ptw.PyTorchClassifier(ptw.MLP4, gpu=0, n_epoch=200, n_out=len(pl.label_names)))
+        pl.predict_proba(
+            output_name='lev1_mlp4', input_names=['imputed', 'tsne'], validate_size=2,
+            estimator=ptw.PyTorchClassifier(ptw.MLP4, gpu=0, n_epoch=200, n_out=len(pl.label_names))
+        )
 
         # --- LEVEL 2 (Stacking) ---
         LEVEL1_PREDICTIONS = [
             'lev1_random-forest', 'lev1_logistic-regression', 'lev1_extra-tree',
             'lev1_linear-svc', 'lev1_xgboost', 'lev1_mlp3', 'lev1_mlp4'
-        ] + [f'lev1_knn_k={k}' for k in KS]
+        ] + ['lev1_knn_k={}'.format(k) for k in KS]
         
         LEVEL1_FEATURES = ['tsne', 'lev1_knn_distances', 'lev1_knn_distances_tsne']
 
-        pl.predict_proba('lev2_logistic-regression', LEVEL1_PREDICTIONS, 1, 
-            sklearn.linear_model.LogisticRegression(n_jobs=-1), version=1)
+        pl.predict_proba(
+            output_name='lev2_logistic-regression', input_names=LEVEL1_PREDICTIONS, validate_size=1, 
+            estimator=sklearn.linear_model.LogisticRegression(n_jobs=-1), 
+            version=1
+        )
 
-        pl.predict_proba('lev2_xgboost2', LEVEL1_PREDICTIONS + LEVEL1_FEATURES, 1,
-            xgboost.XGBClassifier(objective='multi:softmax', learning_rate=0.1, max_depth=5, 
-                                n_estimators=1000, nthread=10, subsample=0.9, colsample_bytree=0.7, 
-                                device='cuda'), version=1)
+        pl.predict_proba(
+            output_name='lev2_xgboost2', input_names=(LEVEL1_PREDICTIONS + LEVEL1_FEATURES), validate_size=1,
+            estimator=xgboost.XGBClassifier(
+                objective='multi:softmax', learning_rate=0.1, max_depth=5, 
+                n_estimators=1000, nthread=10, subsample=0.9, colsample_bytree=0.7, 
+                device='cuda'), 
+            version=1
+        )
         
-        pl.predict_proba('lev2_mlp4', ['imputed'] + LEVEL1_PREDICTIONS + LEVEL1_FEATURES, 1,
-            ptw.PyTorchClassifier(ptw.MLP4, gpu=0, n_epoch=200, n_out=len(pl.label_names)), version=1)
+        pl.predict_proba(
+            output_name='lev2_mlp4', input_names=['imputed'] + LEVEL1_PREDICTIONS + LEVEL1_FEATURES, validate_size=1,
+            estimator=ptw.PyTorchClassifier(ptw.MLP4, gpu=0, n_epoch=200, n_out=len(pl.label_names)), 
+            version=1
+        )
 
-        pl.predict('lev2_linear-svc', ['imputed'], 1, 
-            sklearn.svm.LinearSVC(penalty='l1', loss='squared_hinge', dual=False, C=50))
+        pl.predict(
+            output_name='lev2_linear-svc', input_names=['imputed'], validate_size=1, 
+            estimator=sklearn.svm.LinearSVC(penalty='l1', loss='squared_hinge', dual=False, C=50)
+        )
 
 if __name__ == '__main__':
     main()

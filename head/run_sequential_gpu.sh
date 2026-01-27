@@ -25,7 +25,7 @@ fi
 for i in 0
 do
     echo "Starting training for seed ${i}..."
-    python full_repro.py \
+    python full_new.py \
 	    --gpu=-1 \
 	    --input_dir=$input_dir_fold \
 	    --working_dir=$working_dir/$i \
