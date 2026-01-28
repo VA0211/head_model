@@ -2,15 +2,14 @@ import os
 import subprocess
 
 # --- CONFIGURATION ---
-# We use the paths you provided. 
-# NOTE: We use forward slashes '/' which work on both Python and Bash to avoid confusion.
+# NOTE: Use forward slashes '/' which work on both Python and Bash to avoid confusion.
 project_root = "D:/VA/coding/project/bioinformatics"
 preprocess_dir = f"{project_root}/code/head_model/preprocess"
 mapping_file_path = f"{preprocess_dir}/mapping_file.txt"
 
 # Arguments for the bash script
 tar_file = f"{project_root}/data/GSE211692_RAW.tar"
-output_dir = f"{project_root}/code/head_model/data_clean"  # New clean folder
+output_dir = f"{project_root}/code/head_model/data_clean_all"  # New clean folder
 temp_dir = f"{project_root}/code/head_model/data_clean_tmp"
 
 # --- STEP 1: FORCE CLEAN THE MAPPING FILE ---
@@ -39,22 +38,22 @@ print("-" * 50)
 print("2. Launching run_preprocess.sh now...")
 print("-" * 50)
 
-# We use the /d/ style path for Bash arguments to ensure compatibility
+# Use the /d/ style path for Bash arguments to ensure compatibility
 bash_mapping_path = "/d/VA/coding/project/bioinformatics/code/head_model/preprocess/mapping_file.txt"
 bash_tar_path = "/d/VA/coding/project/bioinformatics/data/GSE211692_RAW.tar"
-bash_out_dir = "/d/VA/coding/project/bioinformatics/code/head_model/data_clean"
+bash_out_dir = "/d/VA/coding/project/bioinformatics/code/head_model/data_clean_all"
 bash_temp_dir = "/d/VA/coding/project/bioinformatics/code/head_model/data_clean_tmp"
 
 cmd = [
     "bash", "run_preprocess.sh",
-    "5",                # n_features
+    "-1",                # n_features
     bash_tar_path,      # Input tar
     bash_out_dir,       # Output dir
     bash_temp_dir,      # Working dir
     bash_mapping_path   # Mapping file
 ]
 
-# Run the command and wait for it to finish
+# Run the command
 result = subprocess.run(cmd, cwd=preprocess_dir)
 
 if result.returncode == 0:

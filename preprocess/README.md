@@ -9,13 +9,11 @@ pip install [--no-cache-dir] -e .
 ## Preparation
 
 1. Download the tar file `GSE211692_RAW.tar` of the accession [GSE211692](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE211692) from Gene Expression Omnibus (GEO).
-2. Check the data path and change if needed
-```
-sed -i 's/\r$//' mapping_file.txt
-```
 
+2. Run `fix_mapping_and_run_preprocess.py`
 ```
-sed -i 's/\r$//' /d/VA/coding/project/bioinformatics/code/head_model/preprocess/mapping_file.txt
+cd preprocess
+python fix_mapping_and_run_preprocess.py
 ```
 
 ## Run preprocessing

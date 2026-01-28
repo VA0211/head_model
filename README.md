@@ -20,10 +20,13 @@ For the usage of code in the subdirectories, see `README.md` therein.
 # syntax: & "<path_to_python310>" -m venv <venv_name>
 & "C:\Users\ldva0\AppData\Local\Programs\Python\Python310\python.exe" -m venv venv_310
 ```
-3. Activate env (Powershell) 
+3. Activate env 
 ```
-# syntax: .\<venv_name>\Scripts\Activate.ps1
+# Powershell syntax: .\<venv_name>\Scripts\Activate.ps1
 .\venv_310\Scripts\Activate.ps1
+
+# Bash syntax: source <venv_name>Scripts/activate
+source venv_310/Scripts/activate
 ```
 4. Install pkgs for training (Powershell)
 ```
