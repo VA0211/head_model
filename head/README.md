@@ -88,3 +88,11 @@ This script outputs prediction results as `<result_dir>/submission.txt`. The `i`
 ```
 bash run_full.sh 0 preprocessed_dir work_dir result_dir
 ```
+
+```
+bash run_sequential_gpu.sh \
+  0 \
+  "/d/VA/coding/project/bioinformatics/code/head_model/data_clean_all" \
+  "work_dir_paper_rep" \
+  "result_paper_rep"
+```

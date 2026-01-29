@@ -22,7 +22,7 @@ fi
 # This forces the computer to finish Loop 0 before starting Loop 1.
 # Keep --gpu=0 to use GPU (RTX 4050).
 
-for i in 0
+for i in 0 1 2 3 4
 do
     echo "Starting training for seed ${i}..."
     python full_new.py \
