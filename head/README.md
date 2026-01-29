@@ -27,7 +27,15 @@ Each subdirectory should have the following files (e.g., subdirectory `0`.)
 - train/labels.txt, test/labels.txt: List of ground truth labels. The `i`-th line represents ground truth label of the `i`-th training (resp. test) instance.
 
 
-## How to run
+## How to run (VA)
+Just need to run this
+```
+bash run_sequential_gpu.sh \
+  0 \
+  "/d/VA/coding/project/bioinformatics/code/head_model/data_clean_all" \
+  "work_dir_paper_rep" \
+  "result_paper_rep"
+```
 
 ### Single estimator (baselines)
 
@@ -87,12 +95,4 @@ This script outputs prediction results as `<result_dir>/submission.txt`. The `i`
 
 ```
 bash run_full.sh 0 preprocessed_dir work_dir result_dir
-```
-
-```
-bash run_sequential_gpu.sh \
-  0 \
-  "/d/VA/coding/project/bioinformatics/code/head_model/data_clean_all" \
-  "work_dir_paper_rep" \
-  "result_paper_rep"
 ```

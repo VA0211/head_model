@@ -8,9 +8,12 @@ pip install [--no-cache-dir] -e .
 
 ## Preparation
 
-1. Download the tar file `GSE211692_RAW.tar` of the accession [GSE211692](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE211692) from Gene Expression Omnibus (GEO).
+Download the tar file `GSE211692_RAW.tar` of the accession [GSE211692](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE211692) from Gene Expression Omnibus (GEO).
 
-2. Run `fix_mapping_and_run_preprocess.py`
+## How to run (VA)
+Just need to run this
+
+Run `fix_mapping_and_run_preprocess.py`
 ```
 cd preprocess
 python fix_mapping_and_run_preprocess.py
